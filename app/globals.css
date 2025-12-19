@@ -2,6 +2,21 @@
 @import "tw-animate-css";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --animate-slow-blink: slowBlink 2.8s ease-in-out infinite;
+  @keyframes slowBlink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -44,6 +59,7 @@
 }
 
 :root {
+  --animate-delay: 0.5s;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
