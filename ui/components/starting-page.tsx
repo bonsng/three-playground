@@ -25,10 +25,10 @@ export default function StartingPage() {
       }}
     >
       <div>
-        <h1 className="animate__animated animate__fadeInDown  text-9xl mb-10">
+        <h1 className="font-title-bebas animate__animated animate__fadeInDown text-9xl mb-10">
           3D Playground
         </h1>
-        <p className="animate__animated animate__fadeInDown animate__delay-1s text-2xl">
+        <p className="font-sans animate__animated animate__fadeInDown animate__delay-1s text-2xl">
           Welcome to 3D Playground.
           <br />
           Explore Three.js features built with React Three Fiber,
@@ -37,7 +37,9 @@ export default function StartingPage() {
           <br />
         </p>
       </div>
-      <p className="fixed bottom-1/3 animate-slow-blink">click to explore</p>
+      <p className="font-sans fixed bottom-1/3 animate-slow-blink">
+        click to explore
+      </p>
     </div>
   );
 }
