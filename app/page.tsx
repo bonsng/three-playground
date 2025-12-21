@@ -4,7 +4,7 @@ import StartingPage from "@/ui/components/starting-page";
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted font-sans text-foreground transition-colors">
-      <StartingPage />
+      {/* <StartingPage /> */}
       <div
         className="text-5xl border border-red-500 w-screen h-screen"
         id="3D-wrapper"
