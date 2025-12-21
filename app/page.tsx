@@ -1,5 +1,4 @@
 import MainPage3D from "@/ui/components/main-page-3d";
-import StartingPage from "@/ui/components/starting-page";
 
 export default function Home() {
   return (

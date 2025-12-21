@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Geist,
-  Geist_Mono,
-  BBH_Sans_Bogle,
-  Bebas_Neue,
-} from "next/font/google";
+import { Geist, Geist_Mono, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import "animate.css";
 import Providers from "@/providers/providers";

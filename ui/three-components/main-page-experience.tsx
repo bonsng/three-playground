@@ -3,18 +3,21 @@ import {
   Image,
   type ImageProps,
   ScrollControls,
+  Html,
 } from "@react-three/drei";
-import { ThreeElements, useFrame } from "@react-three/fiber";
+import { ThreeElements, useFrame, useThree } from "@react-three/fiber";
 import { easing } from "maath";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { contents } from "@/lib/contents";
+import { useRouter } from "next/navigation";
 
 export default function MainPageExperience() {
   return (
     <>
       <ScrollControls pages={4} infinite>
         <Rig rotation={[0, 0, 0]}>
-          <Carousel />
+          <Carousel count={contents.length} />
         </Rig>
       </ScrollControls>
     </>
@@ -28,12 +31,6 @@ const Rig = (props: ThreeElements["group"]) => {
     if (!ref.current) return;
     ref.current.rotation.y = -scroll.offset * (Math.PI * 2);
     state.events?.update?.();
-    // easing.damp3(
-    //   state.camera.position,
-    //   [-state.pointer.x * 2, state.pointer.y + 1.5, 10],
-    //   0.3,
-    //   delta
-    // );
     state.camera.lookAt(0, 0, 0);
   });
 
@@ -46,10 +43,12 @@ type CarouselProps = {
 };
 
 const Carousel = ({ radius = 1.4, count = 8 }: CarouselProps) => {
-  return Array.from({ length: count }, (_, i) => (
+  return contents.map((val, i) => (
     <Card
       key={i}
       url={`/img${Math.floor(i % 10) + 1}_.jpg`}
+      title={val.title}
+      index={val.id}
       position={[
         Math.sin((i / count) * Math.PI * 2) * radius,
         0,
@@ -62,10 +61,23 @@ const Carousel = ({ radius = 1.4, count = 8 }: CarouselProps) => {
 
 type CardProps = ImageProps & {
   url: string;
+  title: string;
+  index: number;
 };
 
-const Card = ({ url, ...props }: CardProps) => {
+const Card = ({ url, title, index, ...props }: CardProps) => {
   const ref = useRef<THREE.Mesh>(null);
+  const { gl } = useThree();
+  const portal = useRef<HTMLElement>(document.body);
+
+  useEffect(() => {
+    // ScrollControls renders into a scrollable overlay div; portaling prevents the label from moving with scroll.
+    portal.current =
+      (gl.domElement.parentElement as HTMLElement) ?? document.body;
+  }, [gl]);
+
+  const router = useRouter();
+
   const [hovered, hover] = useState(false);
   const pointerOver = (e: PointerEvent) => (e.stopPropagation(), hover(true));
   const pointerOut = () => hover(false);
@@ -82,6 +94,10 @@ const Card = ({ url, ...props }: CardProps) => {
     easing.damp(ref.current.material, "zoom", hovered ? 1 : 1.5, 0.2, delta);
   });
 
+  const handleClick = () => {
+    router.push(`/${title.toLowerCase()}`);
+  };
+
   return (
     <Image
       ref={ref}
@@ -91,7 +107,35 @@ const Card = ({ url, ...props }: CardProps) => {
       side={THREE.DoubleSide}
       onPointerOver={pointerOver}
       onPointerOut={pointerOut}
+      onClick={handleClick}
       {...props}
-    />
+    >
+      {hovered && (
+        <Html
+          portal={portal}
+          distanceFactor={1}
+          center
+          transform
+          position={[0, 0.15, 0]}
+          rotation={[0, Math.PI, 0]}
+          style={{ pointerEvents: "none" }}
+        >
+          <div className="border text-black px-3 py-1 text-5xl shadow backdrop-blur w-[30vh] h-[10vh]">
+            <h1
+              className={`${
+                hovered && "animate__animated animate__fadeInDown"
+              }`}
+            >
+              {index.toString().padStart(2, "0")}
+            </h1>
+            <h1
+              className={`${hovered && "animate__animated animate__fadeInUp"}`}
+            >
+              {title}
+            </h1>
+          </div>
+        </Html>
+      )}
+    </Image>
   );
 };
