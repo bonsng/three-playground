@@ -83,15 +83,19 @@ const Card = ({ url, title, index, ...props }: CardProps) => {
   const pointerOut = () => hover(false);
   useFrame((state, delta) => {
     if (!ref.current) return;
-    easing.damp3(ref.current.scale, hovered ? 1.15 : 1, 0.1, delta);
-    easing.damp(
-      ref.current.material,
-      "radius",
-      hovered ? 0.25 : 0.1,
-      0.2,
-      delta
-    );
-    easing.damp(ref.current.material, "zoom", hovered ? 1 : 1.5, 0.2, delta);
+
+    const material = ref.current.material as THREE.MeshBasicMaterial & {
+      zoom: number;
+      radius: number;
+      opacity: number;
+    };
+
+    // 살짝 밝아지는 느낌
+    easing.damp(material, "opacity", hovered ? 1 : 0.85, 0.2, delta);
+
+    // 기존에 쓰던 것들
+    easing.damp(material, "radius", hovered ? 0.25 : 0.1, 0.2, delta);
+    easing.damp(material, "zoom", hovered ? 1 : 1.5, 0.2, delta);
   });
 
   const handleClick = () => {
