@@ -1,9 +1,4 @@
-import {
-  useScroll,
-  Image,
-  ScrollControls,
-  Html,
-} from "@react-three/drei";
+import { useScroll, Image, ScrollControls, Html } from "@react-three/drei";
 import { ThreeElements, useFrame, useThree } from "@react-three/fiber";
 import { easing } from "maath";
 import { useEffect, useRef, useState } from "react";
@@ -104,6 +99,7 @@ const Card = ({ url, title, index, ...props }: CardProps) => {
   };
 
   return (
+    // eslint-disable-next-line jsx-a11y/alt-text
     <Image
       ref={ref}
       url={url}
