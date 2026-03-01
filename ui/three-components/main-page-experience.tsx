@@ -94,7 +94,8 @@ const Card = ({ url, title, index, ...props }: CardProps) => {
     easing.damp(material, "zoom", hovered ? 1 : 1.5, 0.2, delta);
   });
 
-  const handleClick = () => {
+  const handleClick = (e: PointerEvent) => {
+    e.stopPropagation();
     router.push(`/${title.toLowerCase()}`);
   };
 
