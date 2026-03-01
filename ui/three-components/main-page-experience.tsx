@@ -75,8 +75,15 @@ const Card = ({ url, title, index, ...props }: CardProps) => {
   const router = useRouter();
 
   const [hovered, hover] = useState(false);
-  const pointerOver = (e: PointerEvent) => (e.stopPropagation(), hover(true));
-  const pointerOut = () => hover(false);
+  const pointerOver = (e: PointerEvent) => {
+    e.stopPropagation();
+    hover(true);
+    document.body.style.cursor = "pointer";
+  };
+  const pointerOut = () => {
+    hover(false);
+    document.body.style.cursor = "auto";
+  };
   useFrame((state, delta) => {
     if (!ref.current) return;
 
